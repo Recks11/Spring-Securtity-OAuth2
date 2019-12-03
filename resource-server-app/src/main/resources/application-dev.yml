@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: "${AUTH-SERVER-URI}/oauth/check_token"
+      id: "dev-resource"
+    client:
+      client-id: "dev-resource-server"
+      client-secret: "dev-resource-secret"

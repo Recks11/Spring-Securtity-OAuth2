@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: oauth2-auth-server
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/authentication
+    username: root
+    password: Wilson1997.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    user:
+      password: dev@password
+      name: dev-user
+
+  data:
+    mongodb:
+      host: localhost
+      database: tokenstore
+      username: authserver
+      password: password@auth
+      authentication-database: tokenstore
+      port: 27017
+
+
+server:
+  port: 8090
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: rexijie-auth-server
+#      client-secret: 4b6ed982-848a-44e9-bed5-5a3b3573c429
+
