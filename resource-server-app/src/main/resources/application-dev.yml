@@ -4,8 +4,8 @@ server:
 security:
   oauth2:
     resource:
-      token-info-uri: "${AUTH-SERVER-URI}/oauth/check_token"
+      token-info-uri: "${AUTH_SERVER_URI}/oauth/check_token"
       id: "dev-resource"
     client:
-      client-id: "dev-resource-server"
-      client-secret: "dev-resource-secret"
+      client-id: "${CLIENT_ID}"
+      client-secret: "${CLIENT_SECRET}"

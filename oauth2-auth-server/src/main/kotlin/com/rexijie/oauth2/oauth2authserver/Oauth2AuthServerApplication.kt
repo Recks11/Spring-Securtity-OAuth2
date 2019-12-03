@@ -29,6 +29,8 @@ class BootStrap(val service: CustomUserDetailsRepository,
                 val encoder: PasswordEncoder)
     : CommandLineRunner {
     override fun run(vararg args: String?) {
+
+        //Register a user
         val userRole = UserAuthority(0L, role = AuthorityConstants.USER_ROLE)
         val adminRole = UserAuthority(0L, role = AuthorityConstants.ADMIN_ROLE)
         val user = UserEntity(
@@ -49,6 +51,7 @@ class BootStrap(val service: CustomUserDetailsRepository,
 
         service.findAll().forEach{println(it)}
 
+        // Register a client
         val client = AuthClientDetails(
                 id = UUID.randomUUID().toString(),
                 clientId = "dev-resource-server",
