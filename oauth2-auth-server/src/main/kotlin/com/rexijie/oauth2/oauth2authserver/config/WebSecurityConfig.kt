@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -24,9 +26,7 @@ import org.springframework.web.filter.CorsFilter
 
 @EnableWebSecurity
 class WebSecurityConfig(
-        val userDetailsService: CustomUserDetailsService,
-        val accessTokenRepository: AccessTokenRepository,
-        val refreshTokenRepository: RefreshTokenRepository
+        val userDetailsService: CustomUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
@@ -34,6 +34,7 @@ class WebSecurityConfig(
                 .antMatchers("/auth/token", "/profile/me").permitAll()
                 .antMatchers("/auth/authorize").authenticated()
                 .antMatchers("/api/**").authenticated()
+                .antMatchers("/h2-console/**").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
@@ -51,14 +52,6 @@ class WebSecurityConfig(
         return super.authenticationManagerBean()
     }
 
-    @Bean
-    fun tokenStore(): TokenStore {
-        return CustomTokenStore(
-                accessTokenRepository = accessTokenRepository,
-                refreshTokenRepository = refreshTokenRepository
-        )
-    }
-
 
     /**
      * Cors Configuration
@@ -68,7 +61,11 @@ class WebSecurityConfig(
     fun corsFilter(): FilterRegistrationBean<CorsFilter> {
         val source = UrlBasedCorsConfigurationSource()
         val corsConfig = CorsConfiguration()
-        corsConfig.addAllowedMethod("*")
+        corsConfig.addAllowedMethod(HttpMethod.GET)
+        corsConfig.addAllowedMethod(HttpMethod.POST)
+        corsConfig.addAllowedMethod(HttpMethod.DELETE)
+        corsConfig.addAllowedMethod(HttpMethod.PUT)
+        corsConfig.addAllowedMethod(HttpMethod.OPTIONS)
         corsConfig.addAllowedHeader("*")
         corsConfig.addAllowedOrigin("*")
         source.registerCorsConfiguration("/**", corsConfig)
