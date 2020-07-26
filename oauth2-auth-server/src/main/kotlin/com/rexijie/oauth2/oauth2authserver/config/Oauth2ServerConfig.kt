@@ -48,7 +48,7 @@ class Oauth2ServerConfig(val clientDetailsService: AuthClientDetailsService,
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
         security!!.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()")
     }
 
 
